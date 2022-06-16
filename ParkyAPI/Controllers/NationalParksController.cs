@@ -64,6 +64,11 @@ namespace ParkyAPI.Controllers
             }
         }
 
+        /// <summary>
+        ///  Create National Park
+        /// </summary>
+        /// <param name="nationalParkDto">The National Park DTO</param>
+        /// <returns></returns>
         [HttpPost( Name = "CreateNationalPark")]
         [ProducesResponseType(201, Type = typeof(NationalParkDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -88,7 +93,12 @@ namespace ParkyAPI.Controllers
             return CreatedAtRoute("GetNationalPark", new { nationalParkId = nationalParkObj.Id }, nationalParkObj);
         }
 
-
+        /// <summary>
+        ///  Update National Park
+        /// </summary>
+        /// <param name="nationalParkId">The Id of the National Park</param>
+        /// <param name="nationalParkDto">Teh National Park DTO</param>
+        /// <returns></returns>
         [HttpPatch("nationalParkId:int", Name = "UpdateNationalPark")]
         [ProducesResponseType(204)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -110,7 +120,11 @@ namespace ParkyAPI.Controllers
             return NoContent();
         }
 
-
+        /// <summary>
+        ///  Delete National Park
+        /// </summary>
+        /// <param name="nationalParkId">The Id of the National Park</param>
+        /// <returns></returns>
         [HttpDelete("{nationalParkId:int}", Name = "DeleteNationalPark")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
