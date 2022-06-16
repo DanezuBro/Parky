@@ -7,8 +7,10 @@ using ParkyAPI.Repository.IRepository;
 
 namespace ParkyAPI.Controllers
 {
-    [Route("api/Trails")]
+    [Route("api/v{version:apiVersion}/trails")]
+    //[Route("api/Trails")]
     [ApiController]
+    //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecTrails")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class TrailsController : ControllerBase
     {
@@ -65,6 +67,30 @@ namespace ParkyAPI.Controllers
         }
 
         /// <summary>
+        /// Get trails innational park
+        /// </summary>
+        /// <param name="nationalParkId">The Id of the National Park</param>
+        /// <returns></returns>
+        [HttpGet("[action]/{trailId:int}", Name = "GetTrailsInNationalPark")]
+        [ProducesResponseType(200, Type = typeof(List<TrailDto>))]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
+        public IActionResult GetTrailsInNationalPark(int nationalParkId)
+        {
+            var objList = _trailRepo.GetTrailsInNationalPark(nationalParkId);
+            if (objList == null)
+            {
+                return NotFound();
+            }
+            var objDto = new List<TrailDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<TrailDto>(obj));
+            }
+            return Ok(objDto);
+        }
+
+        /// <summary>
         /// Create Trail
         /// </summary>
         /// <param name="trailDto">The Trail DTO</param>
@@ -91,7 +117,7 @@ namespace ParkyAPI.Controllers
                 ModelState.AddModelError("", $"Something went wrong when creating the record {trailObj.Name}");
                 return StatusCode(500, ModelState);
             }
-            return CreatedAtRoute("GetTrail", new { trailId = trailObj.Id }, trailObj);
+            return CreatedAtRoute("GetTrail", new { version = HttpContext.GetRequestedApiVersion().ToString(), trailId = trailObj.Id }, trailObj);
         }
 
 
