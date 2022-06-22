@@ -4,6 +4,7 @@ using ParkyWeb.Repository.IRepository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<INationalParkRepository,NationalParkRepository>();
@@ -23,7 +24,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseCors(x => x
+             .AllowAnyOrigin()
+             .AllowAnyMethod()
+             .AllowAnyHeader());
 app.UseAuthorization();
 
 app.MapControllerRoute(

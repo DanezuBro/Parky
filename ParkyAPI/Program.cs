@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
+builder.Services.AddCors();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(ParkyMappings));
 builder.Services.AddScoped<INationalParkRepository,NationalParkRepository>();
@@ -128,6 +128,11 @@ app.UseHttpsRedirection();
 
 //app.UseSwagger();
 //app.UseSwaggerUI();
+app.UseRouting();
+app.UseCors(x => x
+              .AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
 
 app.UseAuthorization();
 
