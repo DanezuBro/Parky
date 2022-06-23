@@ -18,7 +18,7 @@ namespace ParkyWeb.Controllers
 
         public IActionResult Index()
         {
-            return View(new Trail() { });
+            return View(new TrailsVM() { });
         }
 
         public async Task<IActionResult> Upsert(int? id)
@@ -67,9 +67,9 @@ namespace ParkyWeb.Controllers
 
         #region APICalls
 
-        public async Task<IActionResult> GetAllTrails() 
+        public async Task<IActionResult> GetAllTrails()
         {
-            return Json(new { data  = await _trailRepo.GetAllAsync(SD.TrailAPIPath)});
+Corect so            return Json(new { data  = await _trailRepo.GetAllAsync(SD.TrailAPIPath)});
         }
 
         [HttpDelete]

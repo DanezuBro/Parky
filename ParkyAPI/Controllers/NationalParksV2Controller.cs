@@ -7,9 +7,9 @@ using ParkyAPI.Repository.IRepository;
 
 namespace ParkyAPI.Controllers
 {
-    [Route("api/v{version:apiVersion}/nationalparks")]
-    [ApiVersion("2.0")]
-    //[Route("api/[controller]")]
+    //[Route("api/v{version:apiVersion}/nationalparks")]
+    //[ApiVersion("2.0")]
+    [Route("api/[controller]")]
     [ApiController]
     //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNationalParks")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

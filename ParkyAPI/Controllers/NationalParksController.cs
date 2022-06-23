@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ParkyAPI.Models;
 using ParkyAPI.Models.Dtos;
@@ -9,10 +8,10 @@ using ParkyAPI.Repository.IRepository;
 
 namespace ParkyAPI.Controllers
 {
-    //[Route("api/[controller]")]
-    [Route("api/v{version:apiVersion}/nationalparks")]
+    [Route("api/NationalParks")]
+    //[Route("api/v{version:apiVersion}/nationalparks")]
     [ApiController]
-    [EnableCors("AllowAll")]
+    //[EnableCors("AllowAll")]
     //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNationalParks")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class NationalParksController : ControllerBase
@@ -95,7 +94,7 @@ namespace ParkyAPI.Controllers
                 ModelState.AddModelError("", $"Something went wrong when creating the record {nationalParkObj.Name}");
                 return StatusCode(500, ModelState);
             }
-            return CreatedAtRoute("GetNationalPark", new { version = HttpContext.GetRequestedApiVersion().ToString(), nationalParkId = nationalParkObj.Id }, nationalParkObj);
+            return CreatedAtRoute("GetNationalPark", new { nationalParkId = nationalParkObj.Id }, nationalParkObj);
         }
 
         /// <summary>
@@ -104,7 +103,7 @@ namespace ParkyAPI.Controllers
         /// <param name="nationalParkId">The Id of the National Park</param>
         /// <param name="nationalParkDto">Teh National Park DTO</param>
         /// <returns></returns>
-        [HttpPatch("nationalParkId:int", Name = "UpdateNationalPark")]
+        [HttpPatch("{nationalParkId:int}", Name = "UpdateNationalPark")]
         [ProducesResponseType(204)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -116,13 +115,14 @@ namespace ParkyAPI.Controllers
             }
 
             var nationalParkObj = _mapper.Map<NationalPark>(nationalParkDto);
-
             if (!_npRepo.UpdateNationalPark(nationalParkObj))
             {
                 ModelState.AddModelError("", $"Something went wrong when updating the record {nationalParkObj.Name}");
                 return StatusCode(500, ModelState);
             }
+
             return NoContent();
+
         }
 
         //[HttpPatch("nationalParkId:int", Name = "UpdateNationalPark")]

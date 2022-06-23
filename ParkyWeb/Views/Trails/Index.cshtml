@@ -1,0 +1,32 @@
+﻿@model ParkyWeb.Models.ViewModel.TrailsVM
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Trail List</h2>
+        </div>
+
+        <div class="col-6 text-end text-white">
+            <a asp-action="Upsert" asp-controller="Trails" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create New Trail</a>
+        </div>
+    </div>
+
+    <br />
+        <table id="tblTest" class="table table-bordered table-striped" style="width:100%;">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">National Park</th>
+                    <th scope="col" class="text-center">Trail Name</th>
+                    <th scope="col" class="text-center">Distance</th>
+                    <th scope="col" class="text-center">Elevation</th>
+                    <th scope="col" class="text-center">Actions</th>
+                </tr>
+            </thead>
+        </table>
+
+
+</div>
+
+@section Scripts{
+<script src="~/js/trail.js"></script>
+}

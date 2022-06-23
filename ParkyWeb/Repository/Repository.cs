@@ -90,7 +90,8 @@ namespace ParkyWeb.Repository
             var request = new HttpRequestMessage(HttpMethod.Patch, url);
             if (objToUpdate != null)
             {
-                request.Content = new StringContent(JsonConvert.SerializeObject(objToUpdate), Encoding.UTF8, "application/json");
+                request.Content = new StringContent(
+                    JsonConvert.SerializeObject(objToUpdate), Encoding.UTF8, "application/json");
             }
             else
             {

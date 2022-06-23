@@ -22,31 +22,31 @@ builder.Services.AddAutoMapper(typeof(ParkyMappings));
 builder.Services.AddScoped<INationalParkRepository,NationalParkRepository>();
 builder.Services.AddScoped<ITrailRepository, TrailRepository>();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 builder.Services.AddSwaggerGen();
 
 //builder.Services.AddSwaggerGen();
-//builder.Services.AddSwaggerGen(options =>
-//{
-//    options.SwaggerDoc("ParkyOpenAPISpec",
-//                                    new Microsoft.OpenApi.Models.OpenApiInfo()
-//                                    {
-//                                        Title = "Parky API",
-//                                        Version = "1",
-//                                        Description = "Parky API Description ...",
-//                                        Contact = new Microsoft.OpenApi.Models.OpenApiContact()
-//                                        {
-//                                            Email = "scortarudaniel@yahoo.com",
-//                                            Name = "Scortaru Daniel",
-//                                            Url = new Uri("https://www.exemplu.ro")
-//                                        },
-//                                        License = new Microsoft.OpenApi.Models.OpenApiLicense()
-//                                        {
-//                                            Name = "MIT License",
-//                                            Url = new Uri("https://en.wikipedia.org/wiki/MITLicense")
-//                                        }
-//                                    });
+builder.Services.AddSwaggerGen(options =>
+{
+options.SwaggerDoc("ParkyOpenAPISpec",
+                                new Microsoft.OpenApi.Models.OpenApiInfo()
+                                {
+                                    Title = "Parky API",
+                                    Version = "1",
+                                    Description = "Parky API Description ...",
+                                    Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                                    {
+                                        Email = "scortarudaniel@yahoo.com",
+                                        Name = "Scortaru Daniel",
+                                        Url = new Uri("https://www.exemplu.ro")
+                                    },
+                                    License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                                    {
+                                        Name = "MIT License",
+                                        Url = new Uri("https://en.wikipedia.org/wiki/MITLicense")
+                                    }
+                                });
 
 //    //options.SwaggerDoc("ParkyOpenAPISpecNationalParks",
 //    //                                    new Microsoft.OpenApi.Models.OpenApiInfo()
@@ -89,41 +89,42 @@ builder.Services.AddSwaggerGen();
 //    var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
 //    var cmlCommentFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
 //    options.IncludeXmlComments(cmlCommentFullPath);
-//});
+});
 
-builder.Services.AddApiVersioning(
-        options => 
-        {
-            options.AssumeDefaultVersionWhenUnspecified = true;
-            options.DefaultApiVersion = new ApiVersion(1,0);
-            options.ReportApiVersions = true;
-        });
-builder.Services.AddVersionedApiExplorer(
-    options => 
-    {
-        options.GroupNameFormat = "'v'VVV";
-    });
+//builder.Services.AddApiVersioning(
+//        options => 
+//        {
+//            options.AssumeDefaultVersionWhenUnspecified = true;
+//            options.DefaultApiVersion = new ApiVersion(1,0);
+//            options.ReportApiVersions = true;
+//        });
+//builder.Services.AddVersionedApiExplorer(
+//    options => 
+//    {
+//        options.GroupNameFormat = "'v'VVV";
+//    });
 
 
 
 var app = builder.Build();
-var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+//var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options => 
     {
-        //options.SwaggerEndpoint("ParkyOpenAPISpec/swagger.json", "Parky API");
+        options.SwaggerEndpoint("ParkyOpenAPISpec/swagger.json", "Parky API");
         //options.SwaggerEndpoint("ParkyOpenAPISpecNationalParks/swagger.json", "Parky National Parks API");
         //options.SwaggerEndpoint("ParkyOpenAPISpecTrails/swagger.json", "Parky Trails API");
-        foreach (var desc in provider.ApiVersionDescriptions)
-        {
-            options.SwaggerEndpoint($"{desc.GroupName}/swagger.json", desc.GroupName.ToUpperInvariant());
-        }
+
+        //foreach (var desc in provider.ApiVersionDescriptions)
+        //{
+        //    options.SwaggerEndpoint($"{desc.GroupName}/swagger.json", desc.GroupName.ToUpperInvariant());
+        //}
     });
 }
-app.UseApiVersioning();
+//app.UseApiVersioning();
 app.UseHttpsRedirection();
 
 //app.UseSwagger();
