@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace ParkyWeb.Models
 {
@@ -16,7 +17,7 @@ namespace ParkyWeb.Models
 
         [Required]
         public int NationalParkId { get; set; }
-
+        [ValidateNever]
         public NationalPark NationalPark { get; set; }
     }
 }

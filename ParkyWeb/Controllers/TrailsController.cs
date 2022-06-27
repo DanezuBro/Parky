@@ -26,12 +26,13 @@ namespace ParkyWeb.Controllers
             IEnumerable<NationalPark> npList = await _npRepo.GetAllAsync(SD.NationalParkAPIPath);
             TrailsVM objVM = new TrailsVM()
             {
-                NationalParkList = npList.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = i.Name, Value=i.Id.ToString()})
-            };
+                NationalParkList = npList.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = i.Name, Value=i.Id.ToString()}),
+                Trail = new Trail()
+        };
 
             if (id == null)
             {
-                return View(objVM);
+              return View(objVM);
             }
             objVM.Trail = await _trailRepo.GetAsync(SD.TrailAPIPath, id.GetValueOrDefault());
             if(objVM.Trail == null)

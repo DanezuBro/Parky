@@ -24,71 +24,34 @@ builder.Services.AddScoped<ITrailRepository, TrailRepository>();
 
 //builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-builder.Services.AddSwaggerGen();
-
 //builder.Services.AddSwaggerGen();
-builder.Services.AddSwaggerGen(options =>
+
+builder.Services.AddSwaggerGen(
+    
+    options =>
 {
-options.SwaggerDoc("ParkyOpenAPISpec",
-                                new Microsoft.OpenApi.Models.OpenApiInfo()
-                                {
-                                    Title = "Parky API",
-                                    Version = "1",
-                                    Description = "Parky API Description ...",
-                                    Contact = new Microsoft.OpenApi.Models.OpenApiContact()
-                                    {
-                                        Email = "scortarudaniel@yahoo.com",
-                                        Name = "Scortaru Daniel",
-                                        Url = new Uri("https://www.exemplu.ro")
-                                    },
-                                    License = new Microsoft.OpenApi.Models.OpenApiLicense()
-                                    {
-                                        Name = "MIT License",
-                                        Url = new Uri("https://en.wikipedia.org/wiki/MITLicense")
-                                    }
-                                });
+        options.SwaggerDoc("ParkyOpenAPISpec",
+                                        new Microsoft.OpenApi.Models.OpenApiInfo()
+                                        {
+                                            Title = "Parky API",
+                                            Version = "1",
+                                            Description = "Parky API Description ...",
+                                            Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                                            {
+                                                Email = "scortarudaniel@yahoo.com",
+                                                Name = "Scortaru Daniel",
+                                                Url = new Uri("https://www.exemplu.ro")
+                                            },
+                                            License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                                            {
+                                                Name = "MIT License",
+                                                Url = new Uri("https://en.wikipedia.org/wiki/MITLicense")
+                                            }
+                                        });
 
-//    //options.SwaggerDoc("ParkyOpenAPISpecNationalParks",
-//    //                                    new Microsoft.OpenApi.Models.OpenApiInfo()
-//    //                                    {
-//    //                                        Title = "Parky API National Parks",
-//    //                                        Version = "1",
-//    //                                        Description = "Parky National Parks API Description ...",
-//    //                                        Contact = new Microsoft.OpenApi.Models.OpenApiContact()
-//    //                                        { 
-//    //                                            Email = "scortarudaniel@yahoo.com",
-//    //                                            Name = "Scortaru Daniel",
-//    //                                            Url = new Uri("https://www.exemplu.ro")
-//    //                                        },
-//    //                                        License = new Microsoft.OpenApi.Models.OpenApiLicense()
-//    //                                        {
-//    //                                            Name = "MIT License",
-//    //                                            Url = new Uri("https://en.wikipedia.org/wiki/MITLicense")
-//    //                                        }
-//    //                                    });
-
-//    //options.SwaggerDoc("ParkyOpenAPISpecTrails",
-//    //                                   new Microsoft.OpenApi.Models.OpenApiInfo()
-//    //                                   {
-//    //                                       Title = "Parky API Trails",
-//    //                                       Version = "1",
-//    //                                       Description = "Parky Trails API Description ...",
-//    //                                       Contact = new Microsoft.OpenApi.Models.OpenApiContact()
-//    //                                       {
-//    //                                           Email = "scortarudaniel@yahoo.com",
-//    //                                           Name = "Scortaru Daniel",
-//    //                                           Url = new Uri("https://www.exemplu.ro")
-//    //                                       },
-//    //                                       License = new Microsoft.OpenApi.Models.OpenApiLicense()
-//    //                                       {
-//    //                                           Name = "MIT License",
-//    //                                           Url = new Uri("https://en.wikipedia.org/wiki/MITLicense")
-//    //                                       }
-//    //                                   });
-
-//    var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-//    var cmlCommentFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
-//    options.IncludeXmlComments(cmlCommentFullPath);
+    var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var cmlCommentFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+    options.IncludeXmlComments(cmlCommentFullPath);
 });
 
 //builder.Services.AddApiVersioning(
