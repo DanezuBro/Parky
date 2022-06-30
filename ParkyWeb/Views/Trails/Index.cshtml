@@ -1,6 +1,6 @@
 ﻿@model ParkyWeb.Models.ViewModel.TrailsVM
 
-<div class="container p-3">
+<div class="container p-3" style="border-radius:20px;">
     <div class="row pt-4">
         <div class="col-6">
             <h2 class="text-primary">Trail List</h2>
@@ -12,9 +12,10 @@
     </div>
 
     <br />
+        <div style="background-color:#cde8e2" class="p-3 rounded">
         <table id="tblTest" class="table table-bordered table-striped" style="width:100%;">
             <thead>
-                <tr>
+                <tr class="table-primary">
                     <th scope="col" class="text-center">National Park</th>
                     <th scope="col" class="text-center">Trail Name</th>
                     <th scope="col" class="text-center">Distance</th>
@@ -23,7 +24,7 @@
                 </tr>
             </thead>
         </table>
-
+        </div>
 
 </div>
 

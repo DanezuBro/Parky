@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using ParkyAPI;
 using ParkyAPI.Data;
 using ParkyAPI.ParkyMapper;
@@ -9,6 +11,7 @@ using ParkyAPI.Repository;
 using ParkyAPI.Repository.IRepository;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddAutoMapper(typeof(ParkyMappings));
 builder.Services.AddScoped<INationalParkRepository,NationalParkRepository>();
 builder.Services.AddScoped<ITrailRepository, TrailRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -53,6 +57,27 @@ builder.Services.AddSwaggerGen(
     var cmlCommentFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
     options.IncludeXmlComments(cmlCommentFullPath);
 });
+
+    var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+    builder.Services.Configure<AppSettings>(appSettingsSection);
+
+    var appSettings = appSettingsSection.Get<AppSettings>();
+    var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+    builder.Services.AddAuthentication(x => {
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(x => {
+            x.RequireHttpsMetadata = false;
+            x.SaveToken = true;
+            x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                { 
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                };
+    });
 
 //builder.Services.AddApiVersioning(
 //        options => 
@@ -98,6 +123,7 @@ app.UseCors(x => x
               .AllowAnyMethod()
               .AllowAnyHeader());
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
