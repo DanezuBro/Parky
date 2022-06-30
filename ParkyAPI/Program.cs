@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using ParkyAPI;
 using ParkyAPI.Data;
 using ParkyAPI.ParkyMapper;
@@ -52,6 +53,32 @@ builder.Services.AddSwaggerGen(
                                                 Url = new Uri("https://en.wikipedia.org/wiki/MITLicense")
                                             }
                                         });
+
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme { 
+            Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then yout token in the next input below. \r\n\r\n Example: \"Bearer 12345abcdef\" '",
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Scheme="Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement() {
+        { 
+            new OpenApiSecurityScheme{ 
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    },
+                    Scheme="oauth2",
+                    Name="Bearer",
+                    In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
+
+
 
     var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var cmlCommentFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
