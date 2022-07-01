@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using ParkyWeb.Repository;
 using ParkyWeb.Repository.IRepository;
 
@@ -5,10 +6,29 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCors();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options=>
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.LoginPath = "/Home/Login";
+    options.AccessDeniedPath = "/Home/AccessDenied";
+    options.SlidingExpiration = true;
+});
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
 builder.Services.AddHttpClient();
+
+builder.Services.AddSession(options => { 
+    options.IdleTimeout = TimeSpan.FromMinutes(15);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddScoped<INationalParkRepository,NationalParkRepository>();
 builder.Services.AddScoped<ITrailRepository, TrailRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 
@@ -28,6 +48,9 @@ app.UseCors(x => x
              .AllowAnyOrigin()
              .AllowAnyMethod()
              .AllowAnyHeader());
+
+app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
